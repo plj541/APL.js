@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="UTF-8">
+ <title>Notes on APL.js</title>
+ <style>@import url(../display.css);</style>
+</head><body>
+Expressions in this APL are essentially the same as in other APL
+products.  In the absence of parenthesis, every verb (function)
+takes as its right argument the entire calculation on its right;
+and potentially, a single noun (value) or strand of nouns to its left.<p>
+
+Adverbs and conjunctions (operators) take verbs as arguments and
+return modified verbs.  An adverb has one verb to its left, while
+a conjunction has a verb on both sides.  While adverbs and
+conjunctions are not ambivalent, the derived verbs they derive can be.<p>
+
+Comments begin with:<br>
+&nbsp;&nbsp;&nbsp;<code>⍝ the rest of the line is ignored</code><p>
+
+The only visible difference in expressions is that character
+constants can be delimited by either:<br>
+&nbsp;&nbsp;&nbsp;<code>quote (') or double quote (")</code><br>
+You can choose which in order to avoid the need to double one
+inside the other.<p>
+
+This a script style, source based implementation, rather than providing
+a state preserving workspace.  As a result, system functions like:<br>
+&nbsp;&nbsp;&nbsp;<code>⎕CR and ⎕FX</code><br>
+are unnecessary.  Support for system values like:<br>
+&nbsp;&nbsp;&nbsp;<code>⎕IO and ⎕RL</code><br>
+is also not provided.  To learn what is provided, read<br>
+&nbsp;&nbsp;&nbsp;<a href="Commands and System Names.html"><code>Commands and System Names.html</code></a><p>
+
+All user defined verbs, adverbs and conjunctions are written using
+lambda notation.
+<pre><code>   fun← {
+    foo← ⍺+ 10   ⍝ ⍺ is left argument
+    bar← ⍵- 10   ⍝ ⍵ is right argument
+    foo= bar     ⍝ the result is the last expression
+   }</code></pre>
+
+Please note, the empty initial and last line are simply a
+convention, APL does not require or prohibit empty lines.  Lambda
+expressions can exist within global verbs, adverbs and
+conjunctions.  This provides both for unnamed and local
+verbs, adverbs and conjunctions; as well as providing a way to
+write conditional expressions.
+<pre><code>   fun← {
+    ⍺({⍺- ⍵}⍤ (⍵< 10)) ⍵   ⍝ If ⍵< 10 Then ⍺- ⍵ Else ⍵
+   }</code></pre>
+
+Labels and branch to line number are not provided, so colon
+separates a condition from the statement whose value is returned.
+<pre><code>   fun← {
+    0= ⍴⍵ : ⍺   ⍝ If 0= ⍴⍵ Then Return ⍺
+    ⍵           ⍝ Return ⍵
+   }</code></pre>
+
+In a lambda expression, semicolon creates an ambivalent verb, or
+an ambivalent verb derived from an adverb or conjunction.<br>
+&nbsp;&nbsp;&nbsp;<code>fun← {uses just ⍵ ; can use both ⍺ and ⍵}</code><p>
+   
+To raise an event:<br>
+&nbsp;&nbsp;&nbsp;<code>↗ 'message'</code><p>
+
+Because this APL is written in Javascript, a user only needs to open
+an HTML file which includes the necessary files.  This works locally,
+or on any web site.  No server is required, as all execution actually
+takes place on the user's machine.<p>
+
+A simple example of providing functionality without any visible sign
+of APL, is available at:<br>
+&nbsp;&nbsp;&nbsp;<a href="../SampleApp.html"><code>SampleApp.html</code></a><p>
+
+The SampleApp was written mostly in Javascript, and just called APL verbs
+to provide functionality.  To learn how to design an HTML page in APL, and
+write the event handlers in APL, please read:<br>
+&nbsp;&nbsp;&nbsp;<a href="DesignPages.html"><code>DesignPages.html</code></a><p>
+
+The source for everything in this product is available in:<br>
+&nbsp;&nbsp;&nbsp;<a href="http://home.comcast.net/~paul.l.jackson/APL.js/APL.js.zip"><code>APL.js.zip</code></a><p>
+
+I've patched in <b>0 ÷ 0</b> to behave like APL2.  I've also included
+several examples.  For guidance on installing this product on your 
+machine, please read:<br>
+&nbsp;&nbsp;&nbsp;<a href="Install.html"><code>Install.html</code></a><p>
+
+The original developer's documentation is at:<br>
+&nbsp;&nbsp;&nbsp;<a href="https://github.com/ngn/apl#readme"><code>NGN/APL</code></a><br>
+The above site changes somewhat more frequently than this copy.
+A list of currently known issues with this release is maintained at:<br>
+&nbsp;&nbsp;&nbsp;<a href="Issues.html"><code>Issues.html</code></a>
+
+</body></html>
