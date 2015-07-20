@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html><head>
- <meta charset="UTF-8">
- <title>Notes on APL.js</title>
- <style>@import url(../display.css);</style>
-</head><body>
 Expressions in this APL are essentially the same as in other APL
 products.  In the absence of parenthesis, every verb (function)
 takes as its right argument the entire calculation on its right;
@@ -90,5 +84,3 @@ The original developer's documentation is at:<br>
 The above site changes somewhat more frequently than this copy.
 A list of currently known issues with this release is maintained at:<br>
 &nbsp;&nbsp;&nbsp;<a href="Issues.html"><code>Issues.html</code></a>
-
-</body></html>
