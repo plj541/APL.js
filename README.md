@@ -72,7 +72,7 @@ write the event handlers in APL, please read:<br>
 &nbsp;&nbsp;&nbsp;<a href="DesignPages.html"><code>DesignPages.html</code></a><p>
 
 The source for everything in this product is available in:<br>
-&nbsp;&nbsp;&nbsp;<a href="http://home.comcast.net/~paul.l.jackson/APL.js/APL.js.zip"><code>APL.js.zip</code></a><p>
+&nbsp;&nbsp;&nbsp;<a href="https://drive.google.com/folderview?id=0B4pyTIFvUzRBSnV0RFNhNXJWd28&usp=drive_web"><code>APL.js.zip</code></a><p>
 
 I've patched in <b>0 ÷ 0</b> to behave like APL2.  I've also included
 several examples.  For guidance on installing this product on your 
