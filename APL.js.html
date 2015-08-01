@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="UTF-8">
+ <title>APL.js Session</title>
+ <style>@import url(all-KB.css);</style>
+ <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+ <script type="text/javascript" src="APL/NameSpaces.js"></script>
+ <script type="text/javascript" src="JS/Host.js">
+ </script>
+ <script type="text/javascript" src="JS/Session.js">
+ </script>
+ <script type="text/javascript" src="JS/aplKeys.js">
+ </script>
+ <script type="text/javascript" src="JS/apl.js">
+ </script>
+</head>
+<body onload="handleLoad(formAPL.textInput,
+ formAPL.textOutput, formAPL.buttonKeyboard)">
+ <form name="formAPL" action="">
+  <input type="button" onclick="handleContinue()"
+   value="Continue">&nbsp;&nbsp;&nbsp;
+  <a href="Help/Notes.html"
+   target="_blank">Notes</a>&nbsp;&nbsp;&nbsp;
+  <a href="Run.html?Page=APL/Config"
+   target="_blank">Config</a>&nbsp;&nbsp;&nbsp;
+  <label onclick="addOutput('   )help\n' +
+   runCommand('help'))">Help</label><br>
+  <textarea name="textOutput" rows="22" cols="112"
+   readOnly=true onfocus="showOutput()"></textarea><br>
+  <input type="Text" name="textInput" size="112" 
+   onkeypress="runInputs(event)" />
+ </form>
+ <form name="formRGraph" action=""></form>
+ <form name="formTurtle" action=""></form>
+</body></html>
