@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="UTF-8">
+ <title>APL.js Hosting Compiled</title>
+ <script type="text/javascript" src="APL/NameSpaces.js"></script>
+ <script type="text/javascript" src="JS/App.js"></script> 
+ <script type="text/javascript" src="JS/apl.js"></script>
+ <script type="text/javascript">
+  function handleLoad(aFocus) {
+   if (typeof localStorage == "undefined") {
+    alert("This browser does not support web storage")
+   }
+   initAPL(_LIB_["Dates"] + _LIB_["Numbers"])
+   aFocus.focus()
+  }
+
+  function runMonth(anEvent, aYear, aMonth, anOutput) {
+   if (anEvent == null || anEvent.keyCode == 13) {
+    myArg = aYear.value + " " + aMonth.value
+	 if (myArg.trim().length == 0) {return false}
+	 myResult = callAPL("month " + myArg)
+	 anOutput.value = myResult
+    return false
+   }
+  }
+  
+  function runDay(anEvent, aYear, aMonth, aDay, anOutput) {
+   if (anEvent == null || anEvent.keyCode == 13) {
+    myArg = aYear.value + " " + aMonth.value + " " + aDay.value
+	 if (myArg.trim().length == 0) {return false}
+	 anOutput.value = callAPL("day " + myArg)
+    return false
+   }
+  }
+
+  function runRoman(anEvent, isRoman, aNumber, aRoman, anEnglish) {
+   if (anEvent == null || anEvent.keyCode == 13) {
+    if (isRoman) {
+	  if (aRoman.value.trim().length == 0) {return false}
+	  // NB. fromRoman needs its argument in quotes
+     aNumber.value = callAPL("fromRoman " + quote(aRoman.value))
+	 } else {
+	  if (aNumber.value.trim().length == 0) {return false}
+	  aRoman.value = callAPL("toRoman " + aNumber.value)
+	 }
+    anEnglish.value = callAPL("toEnglish " + aNumber.value)
+    return false
+   }
+  }
+ </script>
+</head><body onload="handleLoad(formHosting.textYear)">
+ <form name="formHosting" action="">
+  <table border="0" cellspacing="0" cellpadding="0">
+   <tr>
+    <td>Year&nbsp;</td>
+    <td>Month</td>
+    <td>&nbsp;Day</td>
+   </tr><tr>
+    <td><input type="Text" name="textYear" size="4" /></td>
+    <td><center><input type="Text" name="textMonth" size="2"
+     onkeypress="return runMonth(event, textYear, textMonth, textCalendar)" /></center></td>
+    <td><center><input type="Text" name="textDay" size="2"
+	 onfocus="runMonth(null, textYear, textMonth, textCalendar)"
+     onkeypress="return runDay(event, textYear, textMonth, textDay, textDate)" /></center></td>
+    <td>&nbsp;is a
+     <input type="Text" name="textDate" size="10" 
+	 onfocus="return runDay(null, textYear, textMonth, textDay, textDate)"
+	 readOnly=true /></td>
+   </tr>
+  </table>
+  <br />
+  <textarea name="textCalendar" rows="8" cols="20"
+   onfocus="showOutput(textOutput)"></textarea><p />
+  
+  <table border="0" cellspacing="0" cellpadding="0">
+   <tr>
+    <td>An Integer</td>
+    <td>Roman Numerals</td>
+   </tr><tr>
+    <td><input type="Text" name="textNumber" size="20"
+     onkeypress="return runRoman(event, false, textNumber, textRoman, textEnglish)" /></td>
+    <td><input type="Text" name="textRoman" size="20"
+	 onfocus="runRoman(null, false, textNumber, textRoman, textEnglish)"
+     onkeypress="return runRoman(event, true, textNumber, textRoman, textEnglish)" /></td>
+   </tr>
+  </table>
+  <input type="Text" name="textEnglish" size="42"
+   onfocus="runRoman(null, true, textNumber, textRoman, textEnglish)"
+   readOnly=true /><p />
+ APL was only used for the functionality provided on this page.<br>
+ The code to handle events was written in Javascript.<p>
+ To see a demo of a page which was designed in APL and<br>
+ all of the events handled by APL verbs, please run:
+ <a href="Run.html">Demo</a>.<br>
+ To learn about how it was written, please read:
+ <a href="Help/DesignPages.html">Design</a>.
+</body></html>
