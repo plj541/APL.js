@@ -1,3 +1,6 @@
+To try this APL, click on
+     http://plj541.github.io/APL.js
+
 Expressions in this APL are essentially the same as in other APL
 products.  In the absence of parenthesis, every verb (function)
 takes as its right argument the entire calculation on its right;
