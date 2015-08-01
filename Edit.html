@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="UTF-8">
+ <title>APL.js Edit</title>
+ <style>@import url(all-KB.css);</style>
+ <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
+ <script type="text/javascript" src="JS/aplKeys.js"></script>
+ <script type="text/javascript" src="JS/Host.js"></script>
+ <script type="text/javascript" src="JS/Edit.js"></script>
+</head><body onload="handleLoad(formAPL.textOutput, formAPL.buttonType)">
+ <form name="formAPL" action="">
+  <table border="0" cellspacing="0" cellpadding="0"><tr>
+   <td width="420">
+    <input type="button" onclick="handleResume()" value="Resume">
+   </td><td width="143">
+    <input type="button" onclick="handleType()" value="Edit Log" name="buttonType">
+   </td><td width="420">
+   </td><td width="260">To Load a file:
+   </td><td width="142">
+    <input type="file" id="fileLoad" />
+  </td></tr></table>
+  <p><textarea name="textOutput" rows="24" cols="112"
+    onchange="thisDirty = true"></textarea>
+ </form> 
+</body></html>
