@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="UTF-8">
+ <title>Issues with APL.js</title>
+ <style>@import url(../display.css);</style>
+</head><body>
+The visual keyboard only responds to pressing the real SHIFT or ALT
+keys.  To actually transmit the visible character, one must click
+the desired image.  For further details on the keyboard, see the
+original author's site:<br>
+&nbsp;&nbsp;&nbsp;<a href="http://mottie.github.io/Keyboard/">Virtual Keyboard</a><p>
+
+The monadic execute verb (⍎) is not aware of its context,
+so it is mostly useful in transforming character input into numbers.<p>
+
+Dyadic execute is aware of the global context.  The result is from
+evaluating the right argument.  If evaluating the right argument fails,
+the result is from evaluating the left argument.<br>
+&nbsp;&nbsp;&nbsp;⎕Error<br>
+is provided to discover the reason for failure within the right
+argument.<p>
+
+QuoteQuad (⍞) output can be used to establish a prompt.
+Output with more than one line will establish a prompt and an initial
+value.  See QuoteQuad in 1 Examples for details on how this works.<p>
+
+Quad and QuoteQuad input are not distinguished.  Use:<br>
+&nbsp;&nbsp;&nbsp;⍎⎕<br>
+to provide evaluated input without access to your name space,
+or use:<br>
+&nbsp;&nbsp;&nbsp;''⍎⎕<br>
+to provide access to your global name space.<p>
+
+The system noun, ⎕CT is implemented in this version.  For
+compatability with NGN APL, the initial value is 0.  The noun is
+global and can have values between 0 and 1e¯10.  Since I know 
+nothing about complex numbers, I have not extended ⎕CT
+support for those.  You will see examples for dyadic ⍳, ∊ and ≡
+in 1 Comparisons.  Please be advised, these verbs are slow.<p>
+
+Indexing of numeric vectors behaves like strand notation, and fails.<br>
+&nbsp;&nbsp;&nbsp;10 20 30 40 [0 2]<br>
+LENGTH ERROR<br>
+Instead, use:<br>
+&nbsp;&nbsp;&nbsp;(10 20 30 40)[0 2]<p>
+
+Overtake on empties does not preserve type.  All empties are
+presumed to be numeric.  To test for character arguments, you
+need to be creative.  I currently use<br>
+&nbsp;&nbsp;&nbsp;' '∊2↑1⍴⍺<p>
+
+Adverbs and Conjunctions are recognized by the presence of
+reserved names.<br>
+&nbsp;&nbsp;&nbsp;⍵⍵ or ⍹&nbsp;&nbsp;&nbsp;Conjunction<br>
+&nbsp;&nbsp;&nbsp;⍺⍺ or ⍶&nbsp;&nbsp;&nbsp;Adverb<br>
+While the definition calls for these to be verbs or nouns, there is
+currently no way to recognize these formal parameters contain nouns.<p>
+
+While this restriction means users cannot model adverbs like / or
+conjunctions like ⍤, experience shows that the current limits are
+a small price to pay for writing code without superfluous parenthesis.<p>
+
+There is a new new apply conjunction (⍭).  It is actually a general
+facility, but it's only use at this point is to provide an Axis variant
+of the following verbs.<br>
+
+<table border="1"><tr>
+<td  width="270">&nbsp;&nbsp;&nbsp;⍺ ↑ ⍵<br>
+&nbsp;&nbsp;&nbsp;⍺ ↑⍭{Axes} ⍵</td>
+<td>&nbsp;&nbsp;&nbsp;Take<br>
+the primary definition provides for a diminished left argument, as
+if the axes specified is ⍳⍴⍺.  The variant definition 
+applies the left argument to the axis specified dimensions.</td>
+</tr><tr>
+<td>&nbsp;&nbsp;&nbsp;⍺ ↓ ⍵<br>
+&nbsp;&nbsp;&nbsp;⍺ ↓⍭{Axes} ⍵</td>
+<td>&nbsp;&nbsp;&nbsp;Drop<br>
+the primary definition provides for a diminished left argument, as
+if the axes specified are ⍳⍴⍺.  The variant definition 
+applies the left argument to the axis specified dimensions.</td>
+</tr><tr>
+<td>&nbsp;&nbsp;&nbsp;⍺ ⌽ ⍵<br>
+&nbsp;&nbsp;&nbsp;⍺ ⌽⍭{Axis} ⍵</td>
+<td>&nbsp;&nbsp;&nbsp;Pivot<br>
+the primary definition only provides a scalar left argument.  The variant
+is required to provide a full left argument as well as specify the axis.</td>
+</tr><tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⊂ ⍵<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⊂⍭{Axes} ⍵</td>
+<td>&nbsp;&nbsp;&nbsp;Enclose<br>
+the primary definition works as if the specified axes are ⍳⍴⍵.</td>
+</tr><tr>
+<td>&nbsp;&nbsp;&nbsp;⍺ ⊂ ⍵<br>
+&nbsp;&nbsp;&nbsp;⍺ ⊂⍭{Axis} ⍵</td>
+<td>&nbsp;&nbsp;&nbsp;Partitioned Enclose<br>
+the primary definition works as if the last axis was specified.</td>
+</tr></table>
+</body></html>
