@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="UTF-8">
+ <title>Design Pages with APL.js</title>
+ <style>@import url(../display.css);</style>
+</head><body>
+This page describes the workspace 1 Html which provides nouns and verbs to
+design, display, and test web pages from the APL development environment.
+There is also Run.html which allows you to host your web pages without the
+users having to learn APL.
+In addition to creating the page layout and the handling of events in fields,
+there are also tools to save information for subsequent processing.<p>
+
+When you click on <a href="../Run.html">Demo</a>, you will 
+see a page with seven labels, eight ordinary text boxes, one multi-line
+text box, four check boxes and one drop down list box.  Additionally,
+there are buttons labeled:<br>
+<table border="1">
+<tr><td width="142">Load</td>
+<td width="642">fills the text fields with random numbers</td></tr>
+<tr><td>Clear</td><td>resets all the fields</td></tr>
+<tr><td>Save</td><td>saves the current field values, which will be
+displayed then next time you try the application</td></tr>
+<tr><td>#Debug</td>
+<td>evaluates an APL expression, useful to test verbs which<br>
+are only useful inside a web page</td></tr></table><p>
+
+The eight Text fields log what happens as you type.  Additionaly,
+a sample noun "newList" is provided to demonstrate rewriting the
+content of fields such as a listbox.<br>
+<table border="1">
+<tr><td width="142">Press</td><td width="642">#Debug</td></tr>
+<tr><td width="142">then type</td><td width="642">newList</td></tr>
+</table><br>
+then look into the drop down list box to see what happened.<p>
+
+To begin learning how this works, either download and install<br>
+&nbsp;&nbsp;&nbsp;<a href="http://home.comcast.net/~paul.l.jackson/APL.js/APL.js.zip">APL.js.zip</a><br>
+or just click on the web version:<br>
+&nbsp;&nbsp;&nbsp;<a href="http://home.comcast.net/~paul.l.jackson/APL.js/">APL.js</a>
+<table border="1">
+<tr><td width="142">then enter</td>
+<td width="642">)fetch APL/Demo</td></tr>
+<tr><td>then enter</td><td>)load testHtml</td></tr>
+<tr><td>then enter</td><td>)edit</td></tr></table><p>
+
+Look at the noun Example to learn how the screen was created.
+There are three reserved noun names which the web page calls:<br>
+<table border="1">
+<tr><td width="142">onDefine</td>
+<td width="642">is called to provide the HTML fields.  Verbs to access<br>
+attributes of fields are not available until onLoad is called.</td></tr>
+<tr><td>onLoad</td>
+<td>runs before the user has access.  This provides<br>
+an opportunity to initialize fields</td></tr>
+<tr><td>onUnload</td>
+<td>runs when the form in unloading.  This provides an<br>
+opportunity to save fields.<br>
+Unfortunately not all browsers call this event,<br>
+so pressing a Save button is more reliable.</td></tr>
+</table><p> 
+
+Much of the functionality is provided by the initial line<br>
+&nbsp;&nbsp;&nbsp;#include Html<br>
+To learn what that does:<br>
+&nbsp;&nbsp;&nbsp;)load 1 Html<p>
+
+First look at the verbs which create each type of field:<br>
+<table border="1">
+<tr><td width="142">Button</td>
+<td width="642">'Visual Label'</td></tr>
+<tr><td>Text</td><td>1 number (which defines size)<br>
+&nbsp;&nbsp;or<br>
+2 numbers (which defines rows and cols)</td></tr>
+<tr><td>Check</td><td>'pair' 'Label Pair'</td></tr>
+<tr><td>List</td><td>('pair' 'Label Pair') ...</td></tr>
+<tr><td>Handle</td><td>'idName' 'onCondition:yourHandler'<br>
+transforms left arguments for any of the above, this<br>
+verb is not called directly by users.  If only one value<br>
+is provided, the presence of ":" identifies what it is.<br>
+On conditions are defined by Javascript,<br>
+but handlers do not have reserved names.</td></tr>
+<tr><td>Table</td>
+<td>turns a matrix into an HTML table.<br>
+Every field verb creates a scalar result, which makes<br>
+putting them together as a matrix easy.</td></tr>
+</table><p>         
+				   
+The following verbs get or set fields with the ID right argument:<br>
+<table border="1">
+<tr><td width="142">Values</td>
+<td width="642">returns "value" from fields,<br>
+or with a left argument, sets a new value or values.</td></tr>
+<tr><td>Checks</td>
+<td>returns "checked" as booleans from fields<br>
+or with a left argument, sets the checked state.</td></tr>
+<tr><td>Defines</td>
+<td>returns "innerHTML" from fields,<br>
+or with a left argument, sets the innerHTML.</td></tr>
+</table><p>
+			
+Inside an event handler, the following verbs get or set an attribute:<br>
+<table border="1">
+<tr><td width="142">Field</td>
+<td width="642">returns an attribute (like 'value') of the current field,<br>
+or with a left argument, sets the attribute</td></tr>
+<tr><td>Event</td>
+<td>returns an attribute (like 'keyCode') of the current event<br>
+or with a left argument, sets the attribute<br>
+I'm not sure you can assign an event attribute,<br>
+this is for completeness.</td></tr>
+</table><p>
+
+In the demo testHtml, the eight Text fields call "sampleEvent" in
+the onkeypress event.  That noun prepends the log of events to the
+multi-line Text field at the bottom of the form.<p>
+
+If you make any changes, to test their effect:<br>
+<table border="1">
+<tr><td width="142">First type</td><td width="642">)save testHtml</td></tr>
+<tr><td width="142">then type</td><td width="642">go</td></tr>
+</table><p>
+
+Once you are ready to release your web page:<br>
+<table border="1">
+<tr><td width="142">First type</td><td width="642">)load 1 Host</td></tr>
+<tr><td width="142">then type</td><td width="642">Save 'testHtml'</td></tr>
+</table><br>
+Then move the file testHtml.jsa to the directory<br>
+&nbsp;&nbsp;&nbsp;APL.js.User<br>
+which you must create in the same directory where
+you put APL.js.<p>
+
+To publish your product on the web, put both APL.js and your
+APL.js.User files where people can access them.  Then provide
+a link to:<br>
+&nbsp;&nbsp;&nbsp;http://yourPath/APL.js/Run.html?Page=yourPage
+</body></html>
