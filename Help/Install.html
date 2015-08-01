@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="UTF-8">
+ <title>Install APL.js</title>
+ <style>@import url(../display.css);</style>
+</head><body>
+Most browsers will download
+<a href="http://home.comcast.net/~paul.l.jackson/APL.js/APL.js.zip"
+><code>APL.js.zip</code></a>.
+Unzip that file into wherever you like.  This works with any
+browser on Windows, I don't have any Apple products, but I've
+been advised that Firefox works better there.  On Android, I
+recommend Google's Chrome browser as it does the best job of
+providing proper HTML screen behaviour.<p>
+
+Unzip is built into the Windows explorer. If you are using
+Android, I recommend getting<br>
+&nbsp;&nbsp;&nbsp;ES File Explorer<br>
+as it has .zip handling built in.<p>
+
+Once you have the product installed, load your browser and
+type the path into the command line.<br>
+&nbsp;&nbsp;&nbsp;file:///pathWhereYouPlacedAPL/APL.js/index.html<br>
+To avoid further typing when starting APL, put the result
+into you favorites list.<p>
+
+If you need the on screen keyboard, press the word Keyboard at the
+top of the screen.  To have it visible in subsequent sessions, press
+the word Config at the top of the screen, then:<br>
+&nbsp;&nbsp;&nbsp;<code>Change the Keyboard from Hidden to Visible</code><br>
+&nbsp;&nbsp;&nbsp;<code>Click the Save button</code><p>
+
+Be sure to learn the layout of the <a href="Keyboard.html"
+><code>keyboard</code></a>,
+because you must enter APL characters like foreign language glyphs.<br>
+&nbsp;&nbsp;&nbsp;`h`[{`a+`i`r`w}<br>
+transforms each time you type the second character.
+The above displays as<br>
+&nbsp;&nbsp;&nbsp;<code>∆←{⍺+⍳⍴⍵}</code><br>
+For Android users, I recommend getting the Hacker's
+Keyboard, as it provides a full keyboard.<p>
+
+After you've installed the product and opened a browser
+page to it, everything depends upon browser capabilities.
+Workspaces in lib 1 are in a file shipped with the
+product.  You can only save workspaces without the
+leading 1.  The workspaces you save are in local browser
+web storage, so if you switch browsers, you workspaces
+will not be available.  The workspace <code>1 Host</code> includes
+several verbs, including <code>Backup</code> which will download
+all of your web storage so that you can copy them into another
+browser or machine.<p>
+
+The )edit command allows the user to write multi-line functions.
+It includes a <code>Choose File</code> button that allows you to
+import files into your browser's web storage.  This is is not a
+full fledged editor with all of the search and replace
+capabilities the modern user would expect.    On Windows, I 
+recommend Notepad++ and on Android I prefer Jota+.  Both can be
+configured to view text using the APL font, "apl385.ttf" which
+is provided here.
+</body>
