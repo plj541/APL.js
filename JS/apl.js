@@ -497,7 +497,7 @@
     }
   };
   Complex = (function() {
-    var acos, add, asin, atan, cosh, direction, divide, exp, firstquadrant, floor, gcd, iszero, itimes, log, multiply, negate, negitimes, pow, residue, sinh, sqrt, subtract, tanh;
+    var acos, add, asin, atan, cosh, direction, divide, exp, firstquadrant, isZeroed, floor, gcd, itimes, log, multiply, negate, negitimes, pow, residue, sinh, sqrt, subtract, tanh;
 
     function Complex(re, im) {
       this.re = re;
@@ -721,20 +721,24 @@
       }
     };
 
-    iszero = function(x) {
-      return x === 0 || (x instanceof Complex && x.re === 0 && x.im === 0);
+    Complex.isZero = function(x) {
+      return isZeroed(x) || (x instanceof Complex && isZeroed(x.re) && isZeroed(x.im));
+    };
+
+    isZeroed = function(x) {
+      return Math.abs(x) <= thisCT;
     };
 
     Complex.residue = residue = function(x, y) {
       var _ref;
       if ((typeof x === (_ref = typeof y) && _ref === 'number')) {
-        if (x === 0) {
+        if (isZeroed(x)) {
           return y;
         } else {
           return y - x * Math.floor(y / x);
         }
       } else {
-        if (iszero(x)) {
+        if (Complex.isZero(x)) {
           return y;
         } else {
           return subtract(y, multiply(x, floor(divide(y, x))));
@@ -775,7 +779,7 @@
         }
         return Math.abs(x);
       } else {
-        while (!iszero(y)) {
+        while (!Complex.isZero(y)) {
           _ref2 = [y, residue(y, x)], x = _ref2[0], y = _ref2[1];
         }
         return firstquadrant(x);
@@ -785,7 +789,7 @@
     Complex.lcm = function(x, y) {
       var p;
       p = multiply(x, y);
-      if (iszero(p)) {
+      if (Complex.isZero(p)) {
         return p;
       } else {
         return divide(p, gcd(x, y));
@@ -2424,7 +2428,7 @@
   });
   addVocabulary({
     '⊤': function(omega, alpha) {
-      var a, b, data, i, j, k, m, n, shape, x, y, z, _i, _j, _k, _len, _ref1;
+      var a, b, data, i, isNeg, j, k, m, n, shape, x, y, z, _i, _j, _k, _len, _ref;
       if (!alpha) {
         throw Error("\"assert ⍺\" at src/vocabulary/encode.coffee:40");
       }
@@ -2437,15 +2441,19 @@
       for (i = _i = 0; 0 <= m ? _i < m : _i > m; i = 0 <= m ? ++_i : --_i) {
         for (j = _j = 0, _len = b.length; _j < _len; j = ++_j) {
           y = b[j];
-          for (k = _k = _ref1 = n - 1; _k >= 0; k = _k += -1) {
+          for (k = _k = n - 1; _k >= 0; k = _k += -1) {
             x = a[k * m + i];
-            if (x === 0) {
+            if (Complex.isZero(x)) {
               data[(k * m + i) * b.length + j] = y;
               y = 0;
             } else {
               z = Complex.residue(x, y);
               data[(k * m + i) * b.length + j] = z;
-              y = (y - z) / x;
+              if (typeof y === (_ref = typeof z) && _ref === 'number') {
+                y = (y - z) / x;
+              } else {
+                y = Complex.divide(Complex.subtract(y, z), x);
+              }
             }
           }
         }
