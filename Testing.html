@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head>
+ <meta charset="UTF-8">
+ <title>APL.js Test for localStorag</title>
+ <script type="text/javascript">
+  function handleLoad(aFocus) {
+   var myOut = []
+   if (typeof(window.localStorage) == "undefined") {
+    myOut.push("<li>This browser does not support Local Storage</li>")
+	} else {
+	 myOut.push("<li>Local Storage is available</li>")
+   }
+   
+   // Check for the various File API support.
+   if (window.File && window.FileReader && window.FileList && window.Blob) {
+    myOut.push("<li>All the File APIs are supported</li>")
+   } else {
+    myOutpush("<li>The File APIs are not fully supported</li>")
+	 if (!window.File) myOutpush("<li>No window.File</li>")
+	 if (!window.FileReader) myOutpush("<li>No window.FileReader</li>")
+	 if (!window.FileList) myOutpush("<li>No window.FileList</li>")
+    if (!window.Blob) myOutpush("<li>No window.Blob</li>")
+   }
+   
+   if (window.XMLHttpRequest) {
+    myOut.push("<li>XML parse is supported</li>")
+	} else {
+	 myOut.push("<li>XML parse is not available</li>")
+	}
+	
+	if ("WebSocket" in window){
+    myOut.push("<li>WebSocket is supported</li>")
+   } else {
+    myOut.push("<li>WebSocket is not available</li>")
+   }
+	
+   document.getElementById('list').innerHTML = '<ul>' + myOut.join('') + '</ul>'
+  }
+ </script>
+</head><body onload="handleLoad()">
+ <output id="list"></output>
+</body></html>

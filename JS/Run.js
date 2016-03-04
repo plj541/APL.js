@@ -29,14 +29,14 @@ function handleLoad() {
  if (myArgs.length != 2) {
   for (myIndex = 2; myIndex < myArgs.length; myIndex += 2) {
    if (myArgs[myIndex] == "File") {
-	 myFile = myArgs[myIndex + 1]
+    myFile = myArgs[myIndex + 1]
    } else if (myArgs[myIndex] == "Local") {
-	 myLocal = true
+	myLocal = true
    } else if (myArgs[myIndex] == "Page") {
     myPage = myArgs[myIndex + 1]
-	} else if (myArgs[myIndex] == "Config") {
+   } else if (myArgs[myIndex] == "Config") {
     myConfig = myArgs[myIndex + 1]
-	}
+   }
   }
  } else {
   myPage = "APL/Demo"
@@ -51,7 +51,7 @@ function handleLoad() {
    }
    myPage += ".jsa"
    if (myPage.substring(0, 4) != "APL/") {
-	 myPage = "../APL.js.User/" + myPage
+	myPage = "../APL.js.User/" + myPage
    }
    jsFetch(myPage)
   }

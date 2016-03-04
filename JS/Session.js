@@ -72,6 +72,7 @@ var thisMap = {
 }
 
 function runInputs(anEvent) {
+  // thisOutput.value += "Event:  " + anEvent.keyCode + "\n"
   if (thisCompose) {
     anEvent.preventDefault()
     thisCompose = false
