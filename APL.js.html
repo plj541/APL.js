@@ -27,8 +27,10 @@
    runCommand('help'))">Help</label><br>
   <textarea name="textOutput" rows="22" cols="112"
    readOnly=true onfocus="showOutput()"></textarea><br>
-  <input type="Text" name="textInput" size="112" 
-   onkeypress="runInputs(event)" />
+  <input type="button" onclick="handleAPL()"
+   value="⍺⍴⍳←">&nbsp;&nbsp;
+  <input type="Text" name="textInput"
+   size="104" onkeypress="runInputs(event)" />
  </form>
  <form name="formRGraph" action=""></form>
  <form name="formTurtle" action=""></form>
