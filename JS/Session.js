@@ -22,6 +22,8 @@ function callAPL(anExpression) {
 }
 
 var thisCompose = false
+var thisDebug = false
+var thisKey = 0
 var thisMap = {
  "`": "`",		"~": "⍨",
  "1": "¨",		"!": "∞",
@@ -41,7 +43,7 @@ var thisMap = {
  "e": "∊",		"E": "⍷",
  "r": "⍴",		"R": "⍤",
  "t": "~",		"T": "⍭",
- "y": "↑",		"Y": "X",
+ "y": "↑",		"Y": "Y",
  "u": "↓",		"U": "⊖",
  "i": "⍳",		"I": "⍸",
  "o": "○",		"O": "⍬",
@@ -50,13 +52,13 @@ var thisMap = {
  "]": "→",		"}": "⊢",
  "\\": "⍀",		"|": "⍉",
  "a": "⍺",		"A": "⍶",
- "s": "⌈",		"S": "X",
- "d": "⌊",		"D": "X",
- "f": "X",		"F": "X",
+ "s": "⌈",		"S": "S",
+ "d": "⌊",		"D": "D",
+ "f": "f",		"F": "F",
  "g": "∇",		"G": "⍒",
  "h": "∆",		"H": "⍋",
  "j": "∘",		"J": "⍝",
- "k": "X",		"K": "X",
+ "k": "k",		"K": "K",
  "l": "⎕",		"L": "⍞",
  ";": "⋄",		":": "⍮",
  "z": "⊂",		"Z": "⊆",
@@ -72,7 +74,10 @@ var thisMap = {
 }
 
 function runInputs(anEvent) {
-  // thisOutput.value += "Event:  " + anEvent.keyCode + "\n"
+  if (thisDebug) {
+    thisOutput.value += "Event:  " + anEvent.keyCode + "\n"
+  }
+
   if (thisCompose) {
     anEvent.preventDefault()
     thisCompose = false
@@ -81,12 +86,12 @@ function runInputs(anEvent) {
     var myStart = thisInput.selectionStart
     var myEnd   = thisInput.selectionEnd
     var myChar  = String.fromCharCode(anEvent.keyCode)
-    myChar = thisMap[myChar] || "?"
+    myChar = thisMap[myChar] || myChar
     thisInput.value = myValue.slice(0, myStart) + 
-       myChar + myValue.slice(myEnd)
+      myChar + myValue.slice(myEnd)
     thisInput.selectionStart =
-       thisInput.selectionEnd = myStart + 1
-  } else if (anEvent.keyCode == 96) {
+      thisInput.selectionEnd = myStart + 1
+  } else if (anEvent.keyCode == thisKey) {
     anEvent.preventDefault()
     thisCompose = true
 //  http://www.w3schools.com/cssref/pr_background-color.asp
@@ -366,6 +371,7 @@ function showOutput() {
 
 function handleLoad(anInput, anOutput, aKeyboard) {
  var myCont
+ setupArgs()
  thisInput = anInput
  thisOutput = anOutput
  thisKeyboard = keysVisible("Session", thisOutput, thisInput)
@@ -387,6 +393,18 @@ function handleLoad(anInput, anOutput, aKeyboard) {
  thisInput.focus() 
 }
 
+function setupArgs() {
+ var myIndex
+ var myArgs = Arguments()
+ for (myIndex = 2; myIndex < myArgs.length; myIndex += 2) {
+  if (myArgs[myIndex] == "Key") {
+   thisKey += myArgs[myIndex + 1]
+  } else if (myArgs[myIndex] == "Debug") {
+   thisDebug = true
+  }
+ }
+}
+
 function handleContinue() {
  storePut("Saved Continue", thisContext.trim())
  storePut("Saved Log", thisLog.trim())
@@ -403,4 +421,23 @@ function handleKeyboard(aButton) {
   cssFetch("all-KB.css")
   aButton.value = "Turn Keyboard On "
  }
+}
+
+function handleAPL() {
+ var myValue = thisInput.value
+ var myEnd = thisInput.selectionStart
+ if (myEnd == 0) {
+  prompt ("Press after a character to transform it into APL.")
+ } else {
+  var myStart = myEnd - 1
+  var myChar  = myValue.substring(myStart, myEnd)
+  // thisOutput.value += "]" + myChar + "[\n"
+  myChar = thisMap[myChar] || ""
+  if (myChar.length != 0) {
+   thisInput.value = myValue.slice(0, myStart) +
+     myChar + myValue.slice(myEnd)
+   thisInput.selectionStart = thisInput.selectionEnd = myStart + 1
+  }
+ }
+ thisInput.focus()
 }
