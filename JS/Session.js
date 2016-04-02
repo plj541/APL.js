@@ -23,7 +23,7 @@ function callAPL(anExpression) {
 
 var thisCompose = false
 var thisDebug = false
-var thisKey = 0
+var thisKey = 96
 var thisMap = {
  "`": "`",		"~": "⍨",
  "1": "¨",		"!": "∞",
@@ -84,11 +84,10 @@ function runInputs(anEvent) {
     thisInput.style.backgroundColor = "White"
     var myValue = thisInput.value
     var myStart = thisInput.selectionStart
-    var myEnd   = thisInput.selectionEnd
     var myChar  = String.fromCharCode(anEvent.keyCode)
     myChar = thisMap[myChar] || myChar
     thisInput.value = myValue.slice(0, myStart) + 
-      myChar + myValue.slice(myEnd)
+      myChar + myValue.slice(myStart + 1)
     thisInput.selectionStart =
       thisInput.selectionEnd = myStart + 1
   } else if (anEvent.keyCode == thisKey) {
@@ -121,7 +120,7 @@ function runInput(anEvent) {
 function runLine(aRequest) {
  if (aRequest.length != 0) {
   try {
-   addOutput("\n" + "   " + aRequest)
+   addOutput("\n   " + aRequest)
    thisInput.focus()
    if (aRequest.substring(0, 1) == ")") {
     addOutput(runCommand(aRequest.substring(1).trim()))
@@ -374,6 +373,7 @@ function handleLoad(anInput, anOutput, aKeyboard) {
  setupArgs()
  thisInput = anInput
  thisOutput = anOutput
+ // window.addEventListener("keypress", runInputs, false)
  thisKeyboard = keysVisible("Session", thisOutput, thisInput)
  if (thisKeyboard) {aKeyboard.value = "Turn Keyboard Off"}
  thisInput.focus()
@@ -398,7 +398,7 @@ function setupArgs() {
  var myArgs = Arguments()
  for (myIndex = 2; myIndex < myArgs.length; myIndex += 2) {
   if (myArgs[myIndex] == "Key") {
-   thisKey += myArgs[myIndex + 1]
+   thisKey = parseInt(myArgs[myIndex + 1])
   } else if (myArgs[myIndex] == "Debug") {
    thisDebug = true
   }
@@ -425,13 +425,12 @@ function handleKeyboard(aButton) {
 
 function handleAPL() {
  var myValue = thisInput.value
- var myEnd = thisInput.selectionStart
+ var myEnd   = thisInput.selectionStart
  if (myEnd == 0) {
-  prompt ("Press after a character to transform it into APL.")
+  prompt ("Press to transform previous character to APL")
  } else {
   var myStart = myEnd - 1
   var myChar  = myValue.substring(myStart, myEnd)
-  // thisOutput.value += "]" + myChar + "[\n"
   myChar = thisMap[myChar] || ""
   if (myChar.length != 0) {
    thisInput.value = myValue.slice(0, myStart) +
