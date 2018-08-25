@@ -1,5 +1,5 @@
 var thisInput, thisOutput, thisAPL, thisKeyboard
-var thisContext = thisLog = thisPrompt = thisLast = ""
+var thisContext = thisLog = thisWsid = thisPrompt = thisLast = ""
 var thisClean = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 
 function loadAPL(aContext) {
@@ -176,23 +176,40 @@ function runCommand(aCommand) {
    ")redo     Run each command in the log\n" +
    ")help     Provide this list of commands\n"
  }
+
+ // )
  if (aCommand.length == 0) {
   thisInput.value = thisLast
   return ""
  }
+
+ // )clear
  if (aCommand == "clear") {
+  thisWsid = ""
   loadAPL(thisLog = "")
   return "Clear WS"
  }
+ 
+ // )clean
  if (aCommand == "clean") {
   thisOutput.value = thisClean
   return ""
  }
+ 
+ // )wsid
+ if (aCommand == "wsid") {
+  if (thisWsid.length == 0) return "No wsid specified"
+  return "Wsid is " + thisWsid
+ }
+ 
+ // )lib
  if (aCommand == "lib") {
   myLib = storeLib("Code ")
   if (myLib.length != 0) {myLib = "\n" + myLib.join("   ")}
   return "1 Dates   1 Examples   1 Host   1 Html   1 Numbers" + myLib
  }
+ 
+ // )fetch
  if (aCommand == "fetch") {
   myLib = storeGet("Saved Config")
   if (myLib.length != 0) {
@@ -205,16 +222,25 @@ function runCommand(aCommand) {
   } 
   return "APL/Comparisons   APL/Demo   APL/Probability   APL/Statistics   APL/XML" + myLib
  }
+ 
+ // )edit
  if (aCommand == "edit") {
+  if ((thisWsid.length !== 0) && (thisContext.length !== 0)) {
+   storePut("BackCode " + thisWsid + timeStamp("  Saved  "), thisContext)
+  }
   loadEdit()
   return ""
  }
+ 
+ // )reload
  if (aCommand == "reload") {
   thisLog = storeGet("Saved Log")
-  timeStamp("Reloaded")
+  commandDone("Reloaded")
   addOutput(loadAPL(storeGet("Saved Context")))
   return ""
  }
+ 
+ // )redo
  if (aCommand == "redo") {
   myParts = thisLog.trim().split("\n")
   thisLog = ""
@@ -223,45 +249,72 @@ function runCommand(aCommand) {
   }
   return ""
  }
+
  // Arguments should not have multiple blanks
  aCommand = deDupBlanks(aCommand)
+ 
+ // )load
  if (aCommand.substring(0, 5) == "load ") {
-  timeStamp("Loaded")
+  commandDone("Loaded")
   thisLog = ""
-  return loadAPL(getNames(aCommand.substring(5)))
+  thisWsid = aCommand.substring(5)
+  return loadAPL(getNames(thisWsid))
  }
+ 
+ if (aCommand == "load") {
+  if (thisWsid.length == 0) return "No wsid specified"
+  commandDone("Loaded")
+  thisLog = ""
+  return loadAPL(getNames(thisWsid))
+ }
+ 
+ // )save
  if (aCommand.substring(0, 5) == "save ") {
-  return setNames(aCommand.substring(5), thisContext)  
+  thisWsid = aCommand.substring(5)
+  return setNames(thisWsid, thisContext)  
  }
+ 
+ if (aCommand == "save") {
+  if (thisWsid.length == 0) return "No wsid specified"
+  return setNames(thisWsid, thisContext)  
+ }
+ 
+ // )drop
  if (aCommand.substring(0, 5) == "drop ") {
   myName = aCommand.substring(5)
   if (myName.substring(0, 2) == "1 ") {
    return "Cannot drop from lib 1"
   }
-  timeStamp(storeDelete("Code " + myName))
+  commandDone(storeDelete("Code " + myName))
   return ""
  }
+ 
+ // )copy
  if (aCommand.substring(0, 5) == "copy ") {
   myCopy = "\n\n" + getNames(aCommand.substring(5)).trim()
-  timeStamp("Copied")
+  commandDone("Copied")
   if (myCopy.length == 2) return ""
   thisContext += myCopy
   return callAPL(myCopy)
  }
+ 
+ // )fetch
  if (aCommand.substring(0, 6) == "fetch ") {
   myName = aCommand.substring(6)
   if (myName.substring(0, 4) != "APL/") {
    myName = "../APL.js.User/" + myName
   }
-  timeStamp(jsFetch(myName + ".jsa"))
+  commandDone(jsFetch(myName + ".jsa"))
   return ""
  }
+ 
+ // That's all folks!
  return "No '" + myName + "' command"
 }
 
 function jsLoad(aType, aName, aString) {
  storePut(aType + aName, aString)
- timeStamp("Fetched  " + aName)
+ commandDone("Fetched  " + aName)
  if (aType == "Code ") {
   thisInput.value = ")load " + aName
  } else if (aType == "File ") {
@@ -294,7 +347,7 @@ function setNames(aName, aValue) {
  if (aName.substring(0, 2) == "1 ") {
   return "Cannot save into Lib 1"
  } else {
-  timeStamp(storePut("Code " + aName, aValue))
+  commandDone(storePut("Code " + aName, aValue))
   return ""
  }
 }
@@ -310,8 +363,20 @@ function deDupBlanks(aString) {
  return myResult
 }
 
-function timeStamp(aCommand) {
- addOutput(aCommand + "   " + new Date().toISOString().substring(0, 19).replace(/T/, " "))
+function commandDone(aCommand) {
+ addOutput(timeStamp(aCommand + '   '))
+}
+
+function timeStamp(aPrefix) {
+ myDate= new Date()
+ myOff= myDate.getTimezoneOffset() * 60000
+ myNow= Date.now()
+ myDate= new Date(myNow- myOff)
+ return aPrefix + myDate.toISOString()
+   .substring(0, 23)
+   .replace(/-/g, "")
+   .replace(/T/, " ")
+   .replace(/:/g, "")
 }
 
 function addOutput(aResult) {
@@ -388,7 +453,7 @@ function handleLoad(anInput, anOutput, aKeyboard) {
   addOutput(storeGet("Saved Output"))
   addOutput(loadAPL(myCont))
   thisInput.focus()
-  timeStamp("Reloaded")
+  commandDone("Reloaded")
  }
  thisInput.focus() 
 }
