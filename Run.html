@@ -2,6 +2,16 @@
 <html><head>
  <meta charset="UTF-8">
  <title>APL.js Run</title>
+ <base href="/sdcard/Documents/APL.js/">
+ <script src="file:///android_asset/app.js"></script>
+ <script type="text/javascript">
+  function RunWrite(aMsg){
+   aMsg= aMsg
+	.replace(new RegExp("\n", "g"), "↓")
+	.replace(new RegExp('"', "g"), "”")
+   app.Execute('localWrite("' + aMsg + '")')
+  }
+ </script>
  <script type="text/javascript" src="APL/NameSpaces.js"></script> 
  <script type="text/javascript" src="JS/Run.js"></script>
  <script type="text/javascript" src="JS/Host.js"></script>
